@@ -1,13 +1,19 @@
 # Wavenet
-A guide to understanding what a Wavenet is
+A compendium of everything you need to know to get started with Wavenet. From turning Audio into Data, Creating the Wavenet Model, feeding and training your model on your data and ultimately generate your own sounds. (Hopefully :p)
 
 ## Introduction:
-Wavenet was first introduced in this [paper](https://arxiv.org/abs/1609.03499) and is an essential read for the rest of this article. 
+* Wavenet was first introduced in this [paper](https://arxiv.org/abs/1609.03499) and is an essential read for the rest of this article. 
+* Why is it so good?
 
 ## From Audio to Data:
-* [Sampling Rate and Bit Depth](https://www.presonus.com/learn/technical-articles/sample-rate-and-bit-depth)
-* [Time Series](https://en.wikipedia.org/wiki/Time_series)
-* Causal Dilated Convolutions
+### [Sampling Rate and Bit Depth](https://www.presonus.com/learn/technical-articles/sample-rate-and-bit-depth) 
+* To understand the underlying inner workings of the wavenet, we need to first take a closer look at the data that we are going to use. Because without Data in the first place, there would be no need for this neural network anyway. We need to train our model on audio. Easier said than done. First and foremost we need to find a way to convert from audio, that we humans perceive and "understand" with our ears, to a format that is machine understandable (Spoiler: Numbers!). Sound, as we hear it in the real world, can be thought of as a continuous analog waveform (continuous vibrations in the air). Converting this analog waveform to a number representation is done by capturing it's descriptory values at successive points in time. Later on, we can chain these descriptory values (samples) together and to accurately recreate the original waveform. Naturally, the more "snapshot" we take of a given sound the better we will be able to recreate it later on with a good "resolution". Hence, the rate of capture is called the "sampling Rate". Bit Depth stands for the number of bits that are used to represent each captured sample. (talk about what bit depth does and help quantize signal-to-noise ratio (SNR))
+
+### [Time Series](https://en.wikipedia.org/wiki/Time_series)
+* Now, we can think of the audio data points that we captured as a time series, which is simply said, a bunch of data points that have some correlation and causality with each other in relation to time.
+
+### Causal Dilated Convolutions
+* 
 
 ## Terms we need to understand:
 I found that reading research papers I would come across a lot of words and terms that I couldn't understand, and they were not explained as it is assumed that you have some knowledge in the field that is being discussed. But if you've just started then a lot of the terms will be a difficult to digest. There will be sections throughout this article that will breka down the important ideas.
