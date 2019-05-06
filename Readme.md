@@ -17,6 +17,7 @@ A compendium of everything you need to know to get started with Wavenet. From tu
 
 ### μ-law quantization or companding transform
 * An ingenious way to shrink our dynamic range.
+* I found several implementations [korean guy](https://github.com/AhmadMoussa/WaveNet-gluon/blob/master/utils.py) and [lemonzi](https://github.com/ibab/tensorflow-wavenet/blob/master/test/test_mu_law.py) but somehow I couldn't get either to work "right", I'll have to look into it at some later point.
 
 ### Causal Dilated Convolutions
 * 
