@@ -15,7 +15,7 @@ A compendium of everything you need to know to get started with Wavenet. From tu
 * Why do these two factors cause us problems?
 * At the end of the day, we're going to want to generate some audio samples. Our nework is going to try to recreate the sample data points that we recorded and fed into our machine. Assume these audio files are Encoded in Stereo 16-bit. That means that there are 65536 values along the y-axis where data points could be located. Now we are not going to delve into madness and try to assume that our network is going to take an educated guess as to where it should place the data point at a given time step t. Luckily, there is a way to reduce this humonguous number of values to a smaller range, specifically 256. Now that's a number that I can work with! 
 
-### μ-law quantization or companding transform
+### [μ-law quantization or companding transform](http://digitalsoundandmusic.com/5-3-8-algorithms-for-audio-companding-and-compression/)
 * An ingenious way to shrink our dynamic range.
 * I found several implementations [korean guy](https://github.com/AhmadMoussa/WaveNet-gluon/blob/master/utils.py) and [lemonzi](https://github.com/ibab/tensorflow-wavenet/blob/master/test/test_mu_law.py) but somehow I couldn't get either to work "right", I'll have to look into it at some later point.
 
