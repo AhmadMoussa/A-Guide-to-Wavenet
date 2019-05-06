@@ -22,9 +22,21 @@ A compendium of everything you need to know to get started with Wavenet. From tu
 ### [μ-law quantization or companding transform](http://digitalsoundandmusic.com/5-3-8-algorithms-for-audio-companding-and-compression/)
 * An ingenious way to shrink our dynamic range.
 * I found several implementations [korean guy](https://github.com/AhmadMoussa/WaveNet-gluon/blob/master/utils.py) and [lemonzi](https://github.com/ibab/tensorflow-wavenet/blob/master/test/test_mu_law.py) but somehow I couldn't get either to work "right", I'll have to look into it at some later point.
+* A quick python implementatio of the mu-law encode, we can use numpy or torch (couldn't figure it out yet though):
+``` 
+# function that will create the mu-law encoding from the input waveform vector
+def encode_mu_law(to_encode, mu = 256):
+    mu = mu -1
+    toplog = np.log(1 + (np.abs(to_encode) * mu))
+    botlog = np.log(1 + mu)
+    sign = np.sign(to_encode)
+    fx =  sign * ( toplog / botlog )
+    return ((fx + 1) / 2 * mu + 0.5).astype(np.long)
+```
+But we still have to convert to the desired range that we want to project onto, namely -256,256
 
 ### Causal Dilated Convolutions
-* 
+* Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
 
 ## Terms we need to understand:
 I found that reading research papers I would come across a lot of words and terms that I couldn't understand, and they were not explained as it is assumed that you have some knowledge in the field that is being discussed. But if you've just started then a lot of the terms will be a difficult to digest. There will be sections throughout this article that will breka down the important ideas.
