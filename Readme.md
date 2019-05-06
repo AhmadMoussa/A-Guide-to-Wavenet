@@ -11,6 +11,12 @@ A compendium of everything you need to know to get started with Wavenet. From tu
 
 ### [Time Series](https://en.wikipedia.org/wiki/Time_series)
 * Now, we can think of the audio data points that we captured as a time series, which is simply said, a bunch of data points that have some correlation and causality with each other in relation to time.
+* But we have a little-not-so-little problem. There is a massive amount of these sample data points, as well as a gigantic dynamic range for each sound.
+* Why do these two factors cause us problems?
+* At the end of the day, we're going to want to generate some audio samples. Our nework is going to try to recreate the sample data points that we recorded and fed into our machine. Assume these audio files are Encoded in Stereo 16-bit. That means that there are 65536 values along the y-axis where data points could be located. Now we are not going to delve into madness and try to assume that our network is going to take an educated guess as to where it should place the data point at a given time step t. Luckily, there is a way to reduce this humonguous number of values to a smaller range, specifically 256. Now that's a number that I can work with! 
+
+### μ-law quantization or companding transform
+* An ingenious way to shrink our dynamic range.
 
 ### Causal Dilated Convolutions
 * 
