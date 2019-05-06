@@ -5,6 +5,10 @@ A compendium of everything you need to know to get started with Wavenet. From tu
 * Wavenet was first introduced in this [paper](https://arxiv.org/abs/1609.03499) and is an essential read for the rest of this article. 
 * Why is it so good?
 
+## Relevant Articles:
+* [A paper a day delays the neuron decay](https://towardsdatascience.com/residual-blocks-building-blocks-of-resnet-fd90ca15d6ec)
+* [Korean Guy](https://medium.com/@kion.kim/wavenet-a-network-good-to-know-7caaae735435)
+
 ## From Audio to Data:
 ### [Sampling Rate and Bit Depth](https://www.presonus.com/learn/technical-articles/sample-rate-and-bit-depth) 
 * To understand the underlying inner workings of the wavenet, we need to first take a closer look at the data that we are going to use. Because without Data in the first place, there would be no need for this neural network anyway. We need to train our model on audio. Easier said than done. First and foremost we need to find a way to convert from audio, that we humans perceive and "understand" with our ears, to a format that is machine understandable (Spoiler: Numbers!). Sound, as we hear it in the real world, can be thought of as a continuous analog waveform (continuous vibrations in the air). Converting this analog waveform to a number representation is done by capturing it's descriptory values at successive points in time. Later on, we can chain these descriptory values (samples) together and to accurately recreate the original waveform. Naturally, the more "snapshot" we take of a given sound the better we will be able to recreate it later on with a good "resolution". Hence, the rate of capture is called the "sampling Rate". Bit Depth stands for the number of bits that are used to represent each captured sample. (talk about what bit depth does and help quantize signal-to-noise ratio (SNR))
