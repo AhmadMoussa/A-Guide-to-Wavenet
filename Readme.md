@@ -20,7 +20,7 @@ A compendium of everything you need to know to get started with Wavenet. From tu
 * At the end of the day, we're going to want to generate some audio samples. Our nework is going to try to recreate the sample data points that we recorded and fed into our machine. Assume these audio files are Encoded in Stereo 16-bit. That means that there are 65536 values along the y-axis where data points could be located. Now we are not going to delve into madness and try to assume that our network is going to take an educated guess as to where it should place the data point at a given time step t. Luckily, there is a way to reduce this humonguous number of values to a smaller range, specifically 256. Now that's a number that I can work with! 
 
 ### [μ-law quantization or companding transform](http://digitalsoundandmusic.com/5-3-8-algorithms-for-audio-companding-and-compression/)
-* An ingenious way to shrink our dynamic range.To understand what we are actually doing we should primarily have a look at a visual analogy. 
+* An ingenious way to shrink our dynamic range. To understand what we are actually doing we should primarily have a look at a visual analogy. 
 * ![An illustration of the Weber–Fechner law. On each side, the lower square contains 10 more dots than the upper one. However the perception is different: On the left side, the difference between upper and lower square is clearly visible. On the right side, the two squares look almost the same.](https://i.imgur.com/84bBwCm.png)
 * So, what exactly are we looking at? Observe the two squares to the left side, which one of them has more dots? Obviously, the lower one.Now observe the two squares to the right. Guess what, it's a little bit more difficult to say which one has more dots now (It's still the lower one, the lower squares have exactly 10 dots more than their upper counterparts). This is known as the Weber-Fechner law, which treats the relation between the actual change in a physical stimulus and the perceived change in the stimulus. 
 * What does this have to do with Audio? Speech, for example, has a very high dynamic range, and when we record someone speaking, we want to capture the big frequency jumps that their voice makes, and compared to these jumps, subtle variations and finer details are lost in comparision. Hence with the mu-law algorithm we can compress a waveform and represent it with significantly less bits, without loosing any important information of the original data.
@@ -41,6 +41,12 @@ But we still have to convert to the desired range that we want to project onto, 
 ## Model Structure:
 
 ### Causal Dilated Convolutions
+* Let's start easy, if you don't know what a convolution is I recommend you go and read [this]()
+* Sometimes it is beneficial to look at the surroundings of a given spot (neuron) and focus on a smaller area, rather than the entire data given to us. We can learn a whole lot by observing the relationship between some data and it's surrounding data. In the case of neural networks that deal with images, it is not practical to use a fully connected feedforward neural network (Even though we can still learn features with this architecture). This area of interest that we are going to inspect in detail, is usually called a "receptive field". The tool (we can also refer to it as a lens) with which we inspect this receptive field is reffered to as a "Filter". 
+* What does the filter look like? The filter is but a small layer of parameters, simply said, a weight matrix. Why is it called a filter? Because we are going to place (figuratively) this filter over our area of interest and pull (by an element wise matrix multiplication) information through it to learn something new about our data. After that we slide our filter to a new area of interest and repeat.
+
+
+* In mathematics the word convolution refers to "a mathematical operation on two functions to produce a third function that expresses how the shape of one is modified by the other" [from wikipedia](https://en.wikipedia.org/wiki/Convolution). We will see the similarity to this in a second. In machine learning, a convolution is an activation layer that returns a feature map. The way it does that, is rather interesting.
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
 
 ## Terms we need to understand:
@@ -55,8 +61,8 @@ Stochastic: something that was randomly determined
 * How can we make neural networks more exciting? We make them accept sequences as input rather than having a fixed number of inputs.
 
 ## Convolutional Network:
-* In mathematics the word convolution refers to "a mathematical operation on two functions to produce a third function that expresses how the shape of one is modified by the other" [from wikipedia](https://en.wikipedia.org/wiki/Convolution). We will see the similarity to this in a second. In machine learning, a convolution is an activation layer that returns a feature map. The way it does that, is rather interesting.
-* Sometimes it is beneficial to look at the surroundings of a given spot (neuron) and focus on a smaller area, rather than the entire data given to us. This area of interest will be called the "receptive field". The lens with which we inspect this receptive field in our neural network will be called a "Filter". The filter is but a small layer of parameters. Why is it called a filter? Because we are going to place this filter over our area of interest and pull information through it to learn something new about our data. After that we slide our filter to a new area of interest and repeat.
+
+
 * Ultimately we end up with an output layer, called an activation map, or feature map. Which gives us a vague idea of what we learned from the convolutional process. If we keep repeating this process we can gain a deeper understanding of our initial input.
 * [Convolutional Layer](http://cs231n.github.io/convolutional-networks/#conv): a layer over which a filter is being applied
 * [Dilated Convolution](https://www.quora.com/What-is-the-difference-between-dilated-convolution-and-convolution+stride): In this type of convolution, the filter expands. This is sometimes also called "Atrous" convolution, where "Atrous" comes from the french word "à trous" meaning "with holes".
