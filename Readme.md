@@ -38,6 +38,8 @@ def encode_mu_law(to_encode, mu = 256):
 ```
 But we still have to convert to the desired range that we want to project onto, namely -256,256
 
+## Model Structure:
+
 ### Causal Dilated Convolutions
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
 
