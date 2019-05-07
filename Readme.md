@@ -41,10 +41,15 @@ But we still have to convert to the desired range that we want to project onto, 
 ## Model Structure:
 
 ### Causal Dilated Convolutions
-* Let's start easy, if you don't know what a convolution is I recommend you go and read [this]()
-* Sometimes it is beneficial to look at the surroundings of a given spot (neuron) and focus on a smaller area, rather than the entire data given to us. We can learn a whole lot by observing the relationship between some data and it's surrounding data. In the case of neural networks that deal with images, it is not practical to use a fully connected feedforward neural network (Even though we can still learn features with this architecture). This area of interest that we are going to inspect in detail, is usually called a "receptive field". The tool (we can also refer to it as a lens) with which we inspect this receptive field is reffered to as a "Filter". 
-* What does the filter look like? The filter is but a small layer of parameters, simply said, a weight matrix. Why is it called a filter? Because we are going to place (figuratively) this filter over our area of interest and pull (by an element wise matrix multiplication) information through it to learn something new about our data. After that we slide our filter to a new area of interest and repeat.
 
+#### Convolutions:
+* Let's start easy, if you don't know what a convolution is I recommend you go and read [this]()
+
+* Sometimes it is beneficial to look at the surroundings of a given spot (neuron) and focus on a smaller area, rather than the entire data given to us. We can learn a whole lot by observing the relationship between some data and it's surrounding data. In the case of neural networks that deal with images, it is not practical to use a fully connected feedforward neural network (Even though we can still learn features with this architecture). This area of interest that we are going to inspect in detail, is usually called a "receptive field". The tool (we can also refer to it as a lens) with which we inspect this receptive field is reffered to as a "Filter". 
+
+* What does the filter look like? The filter is but a small layer of parameters, simply said, a weight matrix. Why is it called a filter? Because we are going to place this filter over our area of interest (figuratively) and pull (by an element wise matrix multiplication) information through it to learn something new about our data. After that we slide our filter to a new area of interest and repeat.
+
+* You must wonder: what is this filter actually doing? In theory we are taking some numbers from the input layer and multiplying them with the weights in the filter, to get some new numbers to describe what is happening in the picture with some abstraction. Ultimately, we end up with an output layer, called an activation map, or feature map. This activation map, represents what the network thinks, is in the image. If we keep repeating this process our model gains a deeper understanding of the initial input.
 
 * In mathematics the word convolution refers to "a mathematical operation on two functions to produce a third function that expresses how the shape of one is modified by the other" [from wikipedia](https://en.wikipedia.org/wiki/Convolution). We will see the similarity to this in a second. In machine learning, a convolution is an activation layer that returns a feature map. The way it does that, is rather interesting.
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
@@ -62,8 +67,6 @@ Stochastic: something that was randomly determined
 
 ## Convolutional Network:
 
-
-* Ultimately we end up with an output layer, called an activation map, or feature map. Which gives us a vague idea of what we learned from the convolutional process. If we keep repeating this process we can gain a deeper understanding of our initial input.
 * [Convolutional Layer](http://cs231n.github.io/convolutional-networks/#conv): a layer over which a filter is being applied
 * [Dilated Convolution](https://www.quora.com/What-is-the-difference-between-dilated-convolution-and-convolution+stride): In this type of convolution, the filter expands. This is sometimes also called "Atrous" convolution, where "Atrous" comes from the french word "à trous" meaning "with holes".
 * [Causal Concolution](https://arxiv.org/abs/1803.01271): this term is rather vague, but a "causal" convolution means that there is no information leakage from future to past.
