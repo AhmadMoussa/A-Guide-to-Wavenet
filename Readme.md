@@ -43,15 +43,22 @@ But we still have to convert to the desired range that we want to project onto, 
 ### Causal Dilated Convolutions
 
 #### Convolutions:
-* Let's start easy, if you don't know what a convolution is I recommend you go and read [this]()
+* Let's digress a bit and start easy, if you don't know what a convolution is I recommend you go for a little stroll, and read this wonderfully comprehensive [beginner's guide by Adit Deshpande](https://adeshpande3.github.io/A-Beginner%27s-Guide-To-Understanding-Convolutional-Neural-Networks/) (this is most comprehensive and beginner friendly read I could find)
 
 * Sometimes it is beneficial to look at the surroundings of a given spot (neuron) and focus on a smaller area, rather than the entire data given to us. We can learn a whole lot by observing the relationship between some data and it's surrounding data. In the case of neural networks that deal with images, it is not practical to use a fully connected feedforward neural network (Even though we can still learn features with this architecture). This area of interest that we are going to inspect in detail, is usually called a "receptive field". The tool (we can also refer to it as a lens) with which we inspect this receptive field is reffered to as a "Filter". 
 
-* What does the filter look like? The filter is but a small layer of parameters, simply said, a weight matrix. Why is it called a filter? Because we are going to place this filter over our area of interest (figuratively) and pull (by an element wise matrix multiplication) information through it to learn something new about our data. After that we slide our filter to a new area of interest and repeat.
+* What does the filter look like? The filter is but a small layer of parameters, simply said, a weight matrix. Why is it called a filter? Because we are going to place this filter over our area of interest (figuratively) and pull (dot products between the entries of the filter and the input at any position, or rather element wise multiplications) information through it to learn something new about our data. After that we slide our filter to a new area of interest and repeat, performing this sliding movement around the picture can also be reffered to as convolving, therefore the term, convolutional neural network.
+
+* ![Convolutional Layer](blob:https://imgur.com/82c2b341-f5ff-4b50-a755-39cf5a3c5eb5)
 
 * You must wonder: what is this filter actually doing? In theory we are taking some numbers from the input layer and multiplying them with the weights in the filter, to get some new numbers to describe what is happening in the picture with some abstraction. Ultimately, we end up with an output layer, called an activation map, or feature map. This activation map, represents what the network thinks, is in the image. If we keep repeating this process our model gains a deeper understanding of the initial input.
 
-* In mathematics the word convolution refers to "a mathematical operation on two functions to produce a third function that expresses how the shape of one is modified by the other" [from wikipedia](https://en.wikipedia.org/wiki/Convolution). We will see the similarity to this in a second. In machine learning, a convolution is an activation layer that returns a feature map. The way it does that, is rather interesting.
+* This was a brief introduction to convolutional layers. If you are hungry for more convolutional neural network shenanigans, I suggest you read this [course by Stanford University on COnvolutional Neural Networks](http://cs231n.github.io/convolutional-networks/#conv)
+
+#### Dilations:
+* 
+
+#### Causality:
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
 
 ## Terms we need to understand:
