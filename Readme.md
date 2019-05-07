@@ -5,6 +5,11 @@ A compendium of everything you need to know to get started with Wavenet. From tu
 * Wavenet was first introduced in this [paper](https://arxiv.org/abs/1609.03499) and is an essential read for the rest of this article. 
 * Why is it so good?
 
+## Tools:
+* python
+* pytorch
+* theano
+
 ## Relevant Articles:
 * [A paper a day delays the neuron decay](https://towardsdatascience.com/residual-blocks-building-blocks-of-resnet-fd90ca15d6ec)
 * [Korean Guy](https://medium.com/@kion.kim/wavenet-a-network-good-to-know-7caaae735435)
