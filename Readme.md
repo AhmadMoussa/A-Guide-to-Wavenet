@@ -57,8 +57,7 @@ But we still have to convert to the desired range that we want to project onto, 
 
 #### Dilations:
 * Now let's expand the concept of a filter (literally and figuratively). 
-* ![Standard Convolution](https://i.imgur.com/WweMRuM.gif)
-* ![Dilated Convolution](https://i.imgur.com/InbYG23.gif)
+* ![Standard Convolution](https://i.imgur.com/WweMRuM.gif) ![Dilated Convolution](https://i.imgur.com/InbYG23.gif)
 
 #### Causality:
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
