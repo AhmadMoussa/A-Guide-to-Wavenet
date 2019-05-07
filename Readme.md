@@ -58,6 +58,8 @@ But we still have to convert to the desired range that we want to project onto, 
 #### Dilations:
 * Now let's expand the concept of a filter (literally and figuratively). 
 * ![Standard Convolution](https://i.imgur.com/WweMRuM.gif) ![Dilated Convolution](https://i.imgur.com/InbYG23.gif)
+* What are dilated convolutions? A dilated convolution refers to a convolution with a filter that is dilated, where dilated means that the filter is enlarged by spacing out the weight values and padding them with zeroes in between. Below is an illustrative schematic:
+* ![Dilated Filter](https://i.imgur.com/MnoFWNn.png)
 
 #### Causality:
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
