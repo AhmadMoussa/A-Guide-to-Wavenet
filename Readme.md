@@ -49,7 +49,7 @@ But we still have to convert to the desired range that we want to project onto, 
 
 * What does the filter look like? The filter is but a small layer of parameters, simply said, a weight matrix. Why is it called a filter? Because we are going to place this filter over our area of interest (figuratively) and pull (dot products between the entries of the filter and the input at any position, or rather element wise multiplications) information through it to learn something new about our data. After that we slide our filter to a new area of interest and repeat, performing this sliding movement around the picture can also be reffered to as convolving, therefore the term, convolutional neural network.
 
-* ![Convolutional Layer](blob:https://imgur.com/82c2b341-f5ff-4b50-a755-39cf5a3c5eb5)
+* ![Convolutional Layer](https://i.imgur.com/IxrbGAg.png)
 
 * You must wonder: what is this filter actually doing? In theory we are taking some numbers from the input layer and multiplying them with the weights in the filter, to get some new numbers to describe what is happening in the picture with some abstraction. Ultimately, we end up with an output layer, called an activation map, or feature map. This activation map, represents what the network thinks, is in the image. If we keep repeating this process our model gains a deeper understanding of the initial input.
 
