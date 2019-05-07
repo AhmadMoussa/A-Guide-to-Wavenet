@@ -43,9 +43,9 @@ But we still have to convert to the desired range that we want to project onto, 
 ### Causal Dilated Convolutions
 
 #### Convolutions:
-* Let's digress a bit and start easy, if you don't know what a convolution is I recommend you go for a little stroll, and read this wonderfully comprehensive [beginner's guide by Adit Deshpande](https://adeshpande3.github.io/A-Beginner%27s-Guide-To-Understanding-Convolutional-Neural-Networks/) (this is most comprehensive and beginner friendly read I could find)
+* Let's digress a bit and start easy, if you don't know what a convolution is I recommend you go for a little stroll, and read this wonderfully comprehensive [beginner's guide by Adit Deshpande](https://adeshpande3.github.io/A-Beginner%27s-Guide-To-Understanding-Convolutional-Neural-Networks/) (this is the most comprehensive and beginner friendly read I could find)
 
-* Sometimes it is beneficial to look at the surroundings of a given spot (neuron) and focus on a smaller area, rather than the entire data given to us. We can learn a whole lot by observing the relationship between some data and it's surrounding data. In the case of neural networks that deal with images, it is not practical to use a fully connected feedforward neural network (Even though we can still learn features with this architecture). This area of interest that we are going to inspect in detail, is usually called a "receptive field". The tool (we can also refer to it as a lens) with which we inspect this receptive field is reffered to as a "Filter". 
+* Sometimes it is beneficial to look at the surroundings of a given spot (neuron) and focus on a smaller area, rather than the entire data given to us. We can learn a whole lot by observing the relationship between some data and it's surrounding data. In the case of neural networks that deal with images, it is not practical to use a fully connected feedforward neural network (Even though we can still learn features with this architecture). This concise area of interest that we are going to inspect in detail, is usually called a "receptive field". The tool (we can also refer to it as a lens) with which we inspect this receptive field is reffered to as a "Filter". 
 
 * What does the filter look like? The filter is but a small layer of parameters, simply said, a weight matrix. Why is it called a filter? Because we are going to place this filter over our area of interest (figuratively) and pull (dot products between the entries of the filter and the input at any position, or rather element wise multiplications) information through it to learn something new about our data. After that we slide our filter to a new area of interest and repeat, performing this sliding movement around the picture can also be reffered to as convolving, therefore the term, convolutional neural network.
 
@@ -56,7 +56,9 @@ But we still have to convert to the desired range that we want to project onto, 
 * This was a brief introduction to convolutional layers. If you are hungry for more convolutional neural network shenanigans, I suggest you read this [course by Stanford University on COnvolutional Neural Networks](http://cs231n.github.io/convolutional-networks/#conv)
 
 #### Dilations:
-* 
+* Now let's expand the concept of a filter (literally and figuratively). 
+* ![Standard Convolution](https://i.imgur.com/WweMRuM.gif)
+* ![Dilated Convolution](https://i.imgur.com/InbYG23.gif)
 
 #### Causality:
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
