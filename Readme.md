@@ -60,6 +60,32 @@ But we still have to convert to the desired range that we want to project onto, 
 
 * This was a brief introduction to convolutional layers. If you are hungry for more convolutional neural network shenanigans, I suggest you read this [course by Stanford University on COnvolutional Neural Networks](http://cs231n.github.io/convolutional-networks/#conv)
 
+```
+
+'''
+    x: DxCxHxW
+    D -> number of inputs
+    C -> number of image channels
+    H -> image height
+    W -> width of image
+
+    W: NFxCxHFxHW
+    NF -> number of the filter in the filter map
+    C -> number of channels (should be same as channels in the picture)
+    HF -> height of the filter
+    HW -> is the width of the filer
+
+    b: is our bias
+'''
+
+def conv_forward(X, W, b, stride = 1, padding = 1):
+    pass
+
+```
+
+[convolutional layer code](https://wiseodd.github.io/techblog/2016/07/16/convnet-conv-layer/)
+
+
 #### Dilations:
 * Now let's expand the concept of a filter (literally and figuratively). 
 * ![Standard Convolution](https://i.imgur.com/WweMRuM.gif) ![Dilated Convolution](https://i.imgur.com/InbYG23.gif)
