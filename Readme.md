@@ -72,26 +72,56 @@ But we still have to convert to the desired range that we want to project onto, 
 
 * This was a brief introduction to convolutional layers. If you are hungry for more convolutional neural network shenanigans, I suggest you read this [course by Stanford University on COnvolutional Neural Networks](http://cs231n.github.io/convolutional-networks/#conv)
 
+And here's the code for a simple 2D convolution that detects vertical lines:
 ```
+from numpy import asarray
+from keras import Sequential
+from keras.layers import Conv2D
+
+# define input data
+data = [[0, 0, 0, 1, 1, 0, 0, 0],
+		[0, 0, 0, 1, 1, 0, 0, 0],
+		[0, 0, 0, 1, 1, 0, 0, 0],
+		[0, 0, 0, 1, 1, 0, 0, 0],
+		[0, 0, 0, 1, 1, 0, 0, 0],
+		[0, 0, 0, 1, 1, 0, 0, 0],
+		[0, 0, 0, 1, 1, 0, 0, 0],
+		[0, 0, 0, 1, 1, 0, 0, 0]]
+
+# Creating a numpy array from the data above
+data = asarray(data)
 
 '''
-    x: DxCxHxW
-    D -> number of inputs
-    C -> number of image channels
-    H -> image height
-    W -> width of image
-
-    W: NFxCxHFxHW
-    NF -> number of the filter in the filter map
-    C -> number of channels (should be same as channels in the picture)
-    HF -> height of the filter
-    HW -> is the width of the filer
-
-    b: is our bias
+    Here we are converting our data to a 4Dimensional container
+    Think of it as an array of tensors (Tensor being a 3Dimensional Array)
+    Such that [number of samples, columns, rows, channels]
+    In this trivial case we only have one sample, and the channels are shallow
 '''
+data = data.reshape(1, 8, 8, 1)
+print(data)
 
-def conv_forward(X, W, b, stride = 1, padding = 1):
-    pass
+# Create a Sequential keras model, we'll only have one layer here
+model = Sequential()
+# https://keras.io/layers/convolutional/
+# Conv2D(number of filters, tuple specifying the dimension of the convolution window, input_shape)
+model.add(Conv2D(1, (3,3), input_shape=(8, 8, 1)))
+
+# Define a vertical line detector
+detector = [[[[0]],[[1]],[[0]]],
+            [[[0]],[[1]],[[0]]],
+            [[[0]],[[1]],[[0]]]]
+weights = [asarray(detector), np.asarray([0.0])]
+# store the weights in the model
+model.set_weights(weights)
+# confirm they were stored
+print(model.get_weights())
+
+# apply filter to input data
+yhat = model.predict(data)
+
+for r in range(yhat.shape[1]):
+	# print each column in the row
+	print([yhat[0,r,c,0] for c in range(yhat.shape[2])])
 
 ```
 
