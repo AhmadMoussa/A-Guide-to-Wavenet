@@ -99,7 +99,7 @@ ___
 
 ![Standard Convolution](https://i.imgur.com/WweMRuM.gif) ![Dilated Convolution](https://i.imgur.com/InbYG23.gif)
 
-* What are dilated convolutions? A dilated convolution refers to a convolution with a filter that is dilated, where dilated means that the filter is enlarged by spacing out the weight values and padding them with zeroes in between. What is really happening, is that we are expanding the receptive field and increasing our coverage, we are looking at the relationship between neighbours that are a little bit more distant from each other. This is useful if some important features of our data are only definable in regions larger than what our receptive covers. To define such a feature, normally one would have to convovle as second time, or use a dilated filter. Below is an illustrative schematic of such a filter:
+* What are dilated convolutions? A dilated convolution refers to a convolution with a filter that is dilated, where dilated means that the filter is enlarged by spacing out the weight values and padding them with zeroes in between. What is really happening, is that we are expanding the receptive field and increasing our coverage, we are looking at the relationship between neighbours that are a little bit more distant from each other. This is useful if some important features of our data are only definable in regions larger than what our receptive field covers. To define such a feature, normally one would have to convovle as second time, or use a dilated filter. Below is an illustrative schematic of such a filter:
 
 ![Dilated Filter](https://i.imgur.com/MnoFWNn.png)
 
@@ -115,7 +115,7 @@ ___
 
 [Original Paper on Dilated Convolutions](https://arxiv.org/pdf/1511.07122.pdf)
 
-#### Causality:
+### Causality:
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
 
 ## Terms we need to understand:
