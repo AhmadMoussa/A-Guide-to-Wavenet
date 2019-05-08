@@ -43,7 +43,7 @@ Looks scary, but it's not really.
 
 * I found several implementations [korean guy](https://github.com/AhmadMoussa/WaveNet-gluon/blob/master/utils.py) and [lemonzi](https://github.com/ibab/tensorflow-wavenet/blob/master/test/test_mu_law.py) but somehow I couldn't get either to work "right", I'll have to look into it at some later point.
 * A quick python implementatio of the mu-law encode, we can use numpy or torch (couldn't figure it out yet though):
-``` 
+```python
 # function that will create the mu-law encoding from the input waveform vector
 def encode_mu_law(to_encode, mu = 256):
     mu = mu -1
@@ -73,7 +73,7 @@ But we still have to convert to the desired range that we want to project onto, 
 * This was a brief introduction to convolutional layers. If you are hungry for more convolutional neural network shenanigans, I suggest you read this [course by Stanford University on COnvolutional Neural Networks](http://cs231n.github.io/convolutional-networks/#conv)
 
 And here's the code for a simple 2D convolution that detects vertical lines:
-```
+```python
 from numpy import asarray
 from keras import Sequential
 from keras.layers import Conv2D
