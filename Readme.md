@@ -98,7 +98,7 @@ def conv_forward(X, W, b, stride = 1, padding = 1):
 
 ![Standard Convolution](https://i.imgur.com/WweMRuM.gif) ![Dilated Convolution](https://i.imgur.com/InbYG23.gif)
 
-* What are dilated convolutions? A dilated convolution refers to a convolution with a filter that is dilated, where dilated means that the filter is enlarged by spacing out the weight values and padding them with zeroes in between. Below is an illustrative schematic:
+* What are dilated convolutions? A dilated convolution refers to a convolution with a filter that is dilated, where dilated means that the filter is enlarged by spacing out the weight values and padding them with zeroes in between. What is really happening, is that we are expanding the receptive field and increasing our coverage, we are looking at the relationship between neighbours that are a little bit more distant from each other. This is useful if some important features of our data are only definable in regions larger than what our receptive covers. To define such a feature, normally one would have to convovle as second time, or use a dilated filter. Below is an illustrative schematic of such a filter:
 
 ![Dilated Filter](https://i.imgur.com/MnoFWNn.png)
 
@@ -106,7 +106,7 @@ def conv_forward(X, W, b, stride = 1, padding = 1):
 
 `Stacked dilated convolutions enable networks to have very large receptive fields with just a few layers, while preserving the input resolution throughout the network as well as computational efficiency.`
 
-* Let's dissect this. let's begin with resolution. Usually, when the filter convolves over an input, we end up with an activation map that has a lesser size than what we started with. Imagine it being like a funnel being applied to each area of the input. In that sense, we are losing resolution. The more convolutional layers we have, the more our input will shrink. `One approach involves repeated up-convolutions that aim to recover lost resolution while carrying over the global perspective from downsampled layers (Noh et al., 2015; Fischer et al., 2015). This leaves open the question of whether severe intermediate downsampling was truly necessary` (Chen et al., 2015; Yu & Koltun, 2016).
+* Let's dissect this,beginning with "resolution". Usually, when the filter convolves over an input, we end up with an activation map that has a lesser size than what we started with. Imagine it being like a funnel being applied to each area of the input. In that sense, we are losing resolution. The more convolutional layers we have, the more our input will shrink. `One approach involves repeated up-convolutions that aim to recover lost resolution while carrying over the global perspective from downsampled layers (Noh et al., 2015; Fischer et al., 2015). This leaves open the question of whether severe intermediate downsampling was truly necessary` (Chen et al., 2015; Yu & Koltun, 2016).
 
 ![Normal Convolution](https://i.imgur.com/RnkTsA6.gif)
 
