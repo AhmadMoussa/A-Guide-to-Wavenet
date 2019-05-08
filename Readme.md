@@ -72,7 +72,7 @@ But we still have to convert to the desired range that we want to project onto, 
 
 * This was a brief introduction to convolutional layers. If you are hungry for more convolutional neural network shenanigans, I suggest you read this [course by Stanford University on COnvolutional Neural Networks](http://cs231n.github.io/convolutional-networks/#conv)
 
-And here's the code for a simple 2D convolution that detects vertical lines:
+And here's the code for a simple 2D convolution that detects vertical lines using keras:
 ```python
 from numpy import asarray
 from keras import Sequential
@@ -125,7 +125,7 @@ for r in range(yhat.shape[1]):
 
 ```
 
-[convolutional layer code](https://wiseodd.github.io/techblog/2016/07/16/convnet-conv-layer/)
+this [tutorial](https://machinelearningmastery.com/convolutional-layers-for-deep-learning-neural-networks/) helped with this example.
 
 ___
 
