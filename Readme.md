@@ -31,7 +31,9 @@ A compendium of everything you need to know to get started with Wavenet. From tu
 
 ### [μ-law quantization or companding transform](http://digitalsoundandmusic.com/5-3-8-algorithms-for-audio-companding-and-compression/)
 * An ingenious way to shrink our dynamic range. To understand what we are actually doing we should primarily have a look at a visual analogy. 
+
 ![An illustration of the Weber–Fechner law. On each side, the lower square contains 10 more dots than the upper one. However the perception is different: On the left side, the difference between upper and lower square is clearly visible. On the right side, the two squares look almost the same.](https://i.imgur.com/84bBwCm.png)
+
 * So, what exactly are we looking at? Observe the two squares to the left side. Which one of them has more dots? Obviously, the lower one. Now observe the two squares to the right. Guess what, it's a little bit more difficult to say which one has more dots now (It's still the lower one, the lower squares have exactly 10 dots more than their upper counterparts). This is known as the Weber-Fechner law, which treats the relation between the actual change in a physical stimulus and the perceived change in the stimulus. 
 * What does this have to do with Audio? Speech, for example, has a very high dynamic range, and when we record someone speaking, we want to capture the big frequency jumps that their voice makes, and compared to these jumps, subtle variations and finer details are lost in comparision. Hence with the mu-law algorithm we can compress a waveform and represent it with significantly less bits, without loosing any important information of the original data.
 * I found several implementations [korean guy](https://github.com/AhmadMoussa/WaveNet-gluon/blob/master/utils.py) and [lemonzi](https://github.com/ibab/tensorflow-wavenet/blob/master/test/test_mu_law.py) but somehow I couldn't get either to work "right", I'll have to look into it at some later point.
