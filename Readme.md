@@ -1,35 +1,35 @@
 # Wavenet
 A compendium of everything you need to know to get started with Wavenet. From turning Audio into Data, Creating the Wavenet Model, feeding and training your model on your data and ultimately generate your own sounds. (Hopefully :p)
 
-## Introduction:
+# Introduction:
 * Wavenet was first introduced in this [paper](https://arxiv.org/abs/1609.03499) and is an essential read for the rest of this article. 
 * Why is it so good?
 
-## Tools:
+# Tools:
 * python
 * pytorch
 * theano
 
-## Relevant Articles:
+# Relevant Articles:
 * [A paper a day delays the neuron decay](https://towardsdatascience.com/residual-blocks-building-blocks-of-resnet-fd90ca15d6ec)
 * [Korean Guy](https://medium.com/@kion.kim/wavenet-a-network-good-to-know-7caaae735435)
 
-## From Audio to Data:
-### [What are Sampling Rate and Bit Depth?](https://www.presonus.com/learn/technical-articles/sample-rate-and-bit-depth) 
+# From Audio to Data:
+## [What are Sampling Rate and Bit Depth?](https://www.presonus.com/learn/technical-articles/sample-rate-and-bit-depth) 
 * To understand the underlying inner workings of the wavenet, we need to first take a closer look at the data that we are going to use. Because without Data in the first place, there would be no need for this neural network anyway. We need to train our model on audio. Easier said than done. First and foremost we need to find a way to convert from audio, that we humans perceive and "understand" with our ears, to a format that is machine understandable (Spoiler: Numbers!). 
 
 
 * Sound, as we hear it in the real world, can be thought of as a continuous analog waveform (continuous vibrations in the air). Converting this analog waveform to a number representation is done by capturing it's descriptive values at successive points in time. analogically it's somewhat like capturing a video, which is ultimately just a succesion of images. Later on, we can chain these descriptive values (samples) together and to accurately recreate the original waveform. Naturally, the more "snapshot" we take of a given sound the better we will be able to recreate it later on with a good "resolution". Hence, the rate of capture is called the "sampling Rate". Bit Depth stands for the number of bits that are used to represent each captured sample. (talk about what bit depth does and help quantize signal-to-noise ratio (SNR))
 
-### [From Audio to Time Series](https://en.wikipedia.org/wiki/Time_series)
+## [From Audio to Time Series](https://en.wikipedia.org/wiki/Time_series)
 * Now, we can think of the audio data points that we captured as a time series, which is simply said, a bunch of data points that have some correlation and causality with each other in relation to time.
 * But we have a little-not-so-little problem. There is a massive amount of these sample data points, as well as a gigantic dynamic range for each sound.
 
 
-##### Why do these two factors cause us problems?
+#### Why do these two factors cause us problems?
 * At the end of the day, we're going to want to generate some audio samples. Our nework is going to try to recreate the sample data points that we recorded and fed into our machine. Assume these audio files are Encoded in Stereo 16-bit. That means that there are 65536 values along the y-axis where data points could be located. Now we are not going to delve into madness and try to assume that our network is going to take an educated guess as to where it should place the data point at a given time step t. Luckily, there is a way to reduce this humonguous number of values to a smaller range, specifically 256. Now that's a number that I can work with! 
 
-### [μ-law quantization or companding transform](http://digitalsoundandmusic.com/5-3-8-algorithms-for-audio-companding-and-compression/)
+## [μ-law quantization or companding transform](http://digitalsoundandmusic.com/5-3-8-algorithms-for-audio-companding-and-compression/)
 * An ingenious way to shrink our dynamic range. To understand what we are actually doing we should primarily have a look at a visual analogy. 
 
 ![An illustration of the Weber–Fechner law. On each side, the lower square contains 10 more dots than the upper one. However the perception is different: On the left side, the difference between upper and lower square is clearly visible. On the right side, the two squares look almost the same.](https://i.imgur.com/84bBwCm.png)
@@ -50,11 +50,11 @@ def encode_mu_law(to_encode, mu = 256):
 ```
 But we still have to convert to the desired range that we want to project onto, namely -256,256
 
-## Model Structure:
+# Model Structure:
 
-### Causal Dilated Convolutions
+## Causal Dilated Convolutions:
 
-#### Convolutions:
+### Convolutions:
 * Let's digress a bit and start easy, if you don't know what a convolution is I recommend you go for a little stroll, and read this wonderfully comprehensive [beginner's guide by Adit Deshpande](https://adeshpande3.github.io/A-Beginner%27s-Guide-To-Understanding-Convolutional-Neural-Networks/) (this is the most comprehensive and beginner friendly read I could find)
 
 * Sometimes it is beneficial to look at the surroundings of a given spot (neuron) and focus on a smaller area, rather than the entire data given to us. We can learn a whole lot by observing the relationship between some data and it's surrounding data. In the case of neural networks that deal with images, it is not practical to use a fully connected feedforward neural network (Even though we can still learn features with this architecture). This concise area of interest that we are going to inspect in detail, is usually called a "receptive field". The tool (we can also refer to it as a lens) with which we inspect this receptive field is reffered to as a "Filter". 
@@ -92,8 +92,9 @@ def conv_forward(X, W, b, stride = 1, padding = 1):
 
 [convolutional layer code](https://wiseodd.github.io/techblog/2016/07/16/convnet-conv-layer/)
 
+___
 
-#### [Dilations](https://www.quora.com/What-is-the-difference-between-dilated-convolution-and-convolution+stride):
+### [Dilations](https://www.quora.com/What-is-the-difference-between-dilated-convolution-and-convolution+stride):
 * Now let's expand the concept of a filter (literally and figuratively). 
 
 ![Standard Convolution](https://i.imgur.com/WweMRuM.gif) ![Dilated Convolution](https://i.imgur.com/InbYG23.gif)
