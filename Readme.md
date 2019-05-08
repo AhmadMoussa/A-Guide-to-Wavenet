@@ -1,4 +1,4 @@
-# Wavenet
+# Wavenet (Work in Progress)
 A compendium of everything you need to know to get started with Wavenet. From turning Audio into Data, Creating the Wavenet Model, feeding and training your model on your data and ultimately generate your own sounds. (Hopefully :p)
 
 # Introduction:
