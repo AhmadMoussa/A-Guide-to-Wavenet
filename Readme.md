@@ -61,7 +61,7 @@ But we still have to convert to the desired range that we want to project onto, 
 
 * What does the filter look like? The filter is but a small layer of parameters, simply said, a weight matrix. Why is it called a filter? Because we are going to place this filter over our area of interest (figuratively) and pull information through it (dot products between the entries of the filter and the input at any position, or rather element wise multiplications) to learn something new about our data. After that we slide our filter to a new area of interest and repeat. Performing this sliding movement around the picture can also be reffered to as convolving, wherefrom stems the term convolutional neural network (CNN).
 
-* ![Convolutional Layer](https://i.imgur.com/IxrbGAg.png)
+![Convolutional Layer](https://i.imgur.com/IxrbGAg.png)
 
 * You must wonder: what is this filter actually doing? In theory we are taking some numbers from the input layer and multiplying them with the weights in the filter, to get some new numbers to describe what is happening in the picture with some abstraction. Ultimately, we end up with an output layer, called an activation map, or feature map. This activation map, represents what the network thinks, is in the image. If we keep repeating this process our model gains a deeper understanding of the initial input.
 
@@ -95,9 +95,12 @@ def conv_forward(X, W, b, stride = 1, padding = 1):
 
 #### Dilations:
 * Now let's expand the concept of a filter (literally and figuratively). 
-* ![Standard Convolution](https://i.imgur.com/WweMRuM.gif) ![Dilated Convolution](https://i.imgur.com/InbYG23.gif)
+
+![Standard Convolution](https://i.imgur.com/WweMRuM.gif) ![Dilated Convolution](https://i.imgur.com/InbYG23.gif)
+
 * What are dilated convolutions? A dilated convolution refers to a convolution with a filter that is dilated, where dilated means that the filter is enlarged by spacing out the weight values and padding them with zeroes in between. Below is an illustrative schematic:
-* ![Dilated Filter](https://i.imgur.com/MnoFWNn.png)
+
+![Dilated Filter](https://i.imgur.com/MnoFWNn.png)
 
 #### Causality:
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
