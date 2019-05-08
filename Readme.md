@@ -93,7 +93,7 @@ def conv_forward(X, W, b, stride = 1, padding = 1):
 [convolutional layer code](https://wiseodd.github.io/techblog/2016/07/16/convnet-conv-layer/)
 
 
-#### Dilations:
+#### [Dilations](https://www.quora.com/What-is-the-difference-between-dilated-convolution-and-convolution+stride):
 * Now let's expand the concept of a filter (literally and figuratively). 
 
 ![Standard Convolution](https://i.imgur.com/WweMRuM.gif) ![Dilated Convolution](https://i.imgur.com/InbYG23.gif)
@@ -101,6 +101,14 @@ def conv_forward(X, W, b, stride = 1, padding = 1):
 * What are dilated convolutions? A dilated convolution refers to a convolution with a filter that is dilated, where dilated means that the filter is enlarged by spacing out the weight values and padding them with zeroes in between. Below is an illustrative schematic:
 
 ![Dilated Filter](https://i.imgur.com/MnoFWNn.png)
+
+* [Why are dilated convolutions useful?](https://stackoverflow.com/questions/41178576/whats-the-use-of-dilated-convolutions)
+
+`Stacked dilated convolutions enable networks to have very large receptive fields with just a few layers, while preserving the input resolution throughout the network as well as computational efficiency.`
+
+* Let's dissect this. let's begin with resolution. Usually, when the filter convolves over an input, we end up with an activation map that has a lesser size than what we started with. Imagine it being like a funnel being applied to each area of the input.
+
+![Convolution](https://i.imgur.com/RnkTsA6.gif)
 
 #### Causality:
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
