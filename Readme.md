@@ -156,6 +156,30 @@ ___
 ## Gated Activation Units:
 * The term "Gate" has been adopted in a number of fields, for example in music production, we use the term "Noise-Gate" when we refer to a device that is responsible for attenuating signals that fall below some pre determined threshhold, and simpler said, if a certain sound is not loud then the listener will not be able to hear it at all. 
 
+* ![Gated Activation Unit Function](https://i.imgur.com/CtVxRtC.png)
+
+* You'll understand what's going on in a minute.
+
+* What are activation functions and why are they useful? As it's name illustrates, it can be viewed as a mechanism that decides if it should pass on the signal that it received or not. Usually, the type of the problem we are dealing with, determines which type of activation functions would be best suited. Let's have a look at three different types of these functions:
+
+#### Sigmoid:
+Advantages, smooth and analogue-esque step function like. It's also not linear, hence chaining this function 
+#### tanh:
+#### Rectified Linear Unit:
+
+
+
+* Apparently these gates yield better results than using a rectified linear unit. Pin-pointing why they do so 
+
+* Using this type of gate, it allows us to control what information will be propagated throughout the remaining layers. This concept has been adopted from LSTM models where gates are employed to establish a "long term memory" for important information, as opposed to RNNs which struggle retaining such information. Dauphin et. al. offers a good explanation for this in section 3 of his paper on "Language Modeling with Gated Convolutional Networks":
+
+```
+	LSTMs enable long-term memory via a separate cell controlled by input and forget gates. This allows information to flow unimpeded through potentially many timesteps. Without these gates, information could easily vanish through the transformations of each timestep.
+	In contrast, convolutional networks do not suffer from the same kind of vanishing gradient and we find experimentally that they do not require forget gates. Therefore, we consider models possessing solely output gates, which allow the network to control what information should be propagated through the hierarchy of layers.
+```
+
+* Another reason why this concept was adopted might be because PixelRNN have been outperforming PixelCNN due to them having recurrent connections between one layer to all other layers in the network, whereas PixelCNN does not have this feature. This is solved by adding more layers to add depth, and since CNNs don't struggle with vanishing gradients we don't have to worry about that, whereas RNNs do. We also add a gate to mimic the gates of the inner workings of LSTMs and have more control over the flow of information through our model.
+
 ## Terms we need to understand:
 I found that reading research papers I would come across a lot of words and terms that I couldn't understand, and they were not explained as it is assumed that you have some knowledge in the field that is being discussed. But if you've just started then a lot of the terms will be a difficult to digest. There will be sections throughout this article that will breka down the important ideas.
 * Tractable: you will come across this term in the context of solving problems, computing/calculating things and creating models. In the context of solving a problem, when we state that a problem is "tractable", it means that it can be solved or that the value can be found in a reasonable amount of time. Some problems are said to be "Intractable". From a computational complexity stance, intractable problems are problems for which there exist no efficient algorithms to solve them. Most intractable problems have an algorithm – the same algorithm – that provides a solution, and that algorithm is the brute-force search.
