@@ -177,6 +177,7 @@ Advantages, smooth and analogue-esque step function like. It's also not linear, 
 	LSTMs enable long-term memory via a separate cell controlled by input and forget gates. This allows information to flow unimpeded through potentially many timesteps. Without these gates, information could easily vanish through the transformations of each timestep.
 	In contrast, convolutional networks do not suffer from the same kind of vanishing gradient and we find experimentally that they do not require forget gates. Therefore, we consider models possessing solely output gates, which allow the network to control what information should be propagated through the hierarchy of layers.
 ```
+And here's the [paper](https://arxiv.org/pdf/1612.08083.pdf) for reference.
 
 * Another reason why this concept was adopted might be because PixelRNN have been outperforming PixelCNN due to them having recurrent connections between one layer to all other layers in the network, whereas PixelCNN does not have this feature. This is solved by adding more layers to add depth, and since CNNs don't struggle with vanishing gradients we don't have to worry about that, whereas RNNs do. We also add a gate to mimic the gates of the inner workings of LSTMs and have more control over the flow of information through our model.
 
