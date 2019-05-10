@@ -154,9 +154,9 @@ ___
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
 
 ## Gated Activation Units:
-* The term "Gate" has been adopted in a number of fields, for example in music production, we use the term "Noise-Gate" when we refer to a device that is responsible for attenuating signals that fall below some pre determined threshhold, and simpler said, if a certain sound is not loud then the listener will not be able to hear it at all. 
+* The term "Gate" has been adopted in a number of fields, for example in music production, we use the term "Noise-Gate" when we refer to a device that is responsible for attenuating signals that fall below some pre determined threshhold, and simpler said, if a certain sound is not loud enough, then the listener will not be able to hear it at all. 
 
-* ![Gated Activation Unit Function](https://i.imgur.com/CtVxRtC.png)
+![Gated Activation Unit Function](https://i.imgur.com/CtVxRtC.png)
 
 * You'll understand what's going on in a minute.
 
@@ -166,8 +166,6 @@ ___
 Advantages, smooth and analogue-esque step function like. It's also not linear, hence chaining this function 
 #### tanh:
 #### Rectified Linear Unit:
-
-
 
 * Apparently these gates yield better results than using a rectified linear unit. Pin-pointing why they do so 
 
