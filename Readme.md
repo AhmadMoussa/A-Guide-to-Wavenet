@@ -153,31 +153,56 @@ ___
 ### Causality:
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
 
+* At the time of training our model, we need to hide information that occurs after timestep t. Timestep t should not depend on any future timesteps, otherwise we would be cheating quite a bit, there should be no "leakage from future to past".
+
 ## Gated Activation Units:
 * The term "Gate" has been adopted in a number of fields, for example in music production, we use the term "Noise-Gate" when we refer to a device that is responsible for attenuating signals that fall below some pre determined threshhold, and simpler said, if a certain sound is not loud enough, then the listener will not be able to hear it at all. 
 
-![Gated Activation Unit Function](https://i.imgur.com/CtVxRtC.png)
+* What are activation functions and why are they useful? As it's name indicates, it can be viewed as a mechanism that decides, based on the amplitude of an incoming signal, if it should send a signal or not. Usually, the type of the problem we are dealing with, determines which type of activation functions would be best suited. Let's have a look at three different types of these functions:
 
-* You'll understand what's going on in a minute.
-
-* What are activation functions and why are they useful? As it's name illustrates, it can be viewed as a mechanism that decides if it should pass on the signal that it received or not. Usually, the type of the problem we are dealing with, determines which type of activation functions would be best suited. Let's have a look at three different types of these functions:
-
+I think I should write a tutorial for these activation functions separately, as it blows up the range of this article quite a bit.
 #### Sigmoid:
-Advantages, smooth and analogue-esque step function like. It's also not linear, hence chaining this function 
+
+![Sigmoid Function](https://i.imgur.com/iQF327F.png)
+
+Historically, this has been the most widely used activation function (before it was replaced by the ReLU). Why is the sigmoid function used? And what makes it a good activation function? It has several nice properties. One of them is differentiability, this is especially important when the gradient needs to be calculated during back-propagation. It is also non-linear, this allows us to stack layers.
+
+![Linear function](https://i.imgur.com/0h3TtqR.png)
+
+A stack of linear functions would be equivalent to have a single one. Therefore with this 
+
 #### tanh:
+
 #### Rectified Linear Unit:
+
+
+![Gated Activation Unit Function](https://i.imgur.com/CtVxRtC.png)
 
 * Apparently these gates yield better results than using a rectified linear unit. Pin-pointing why they do so 
 
 * Using this type of gate, it allows us to control what information will be propagated throughout the remaining layers. This concept has been adopted from LSTM models where gates are employed to establish a "long term memory" for important information, as opposed to RNNs which struggle retaining such information. Dauphin et. al. offers a good explanation for this in section 3 of his paper on "Language Modeling with Gated Convolutional Networks":
 
-```
-	LSTMs enable long-term memory via a separate cell controlled by input and forget gates. This allows information to flow unimpeded through potentially many timesteps. Without these gates, information could easily vanish through the transformations of each timestep.
+
+> LSTMs enable long-term memory via a separate cell controlled by input and forget gates. This allows information to flow unimpeded through potentially many timesteps. Without these gates, information could easily vanish through the transformations of each timestep.
 	In contrast, convolutional networks do not suffer from the same kind of vanishing gradient and we find experimentally that they do not require forget gates. Therefore, we consider models possessing solely output gates, which allow the network to control what information should be propagated through the hierarchy of layers.
-```
+	
 And here's the [paper](https://arxiv.org/pdf/1612.08083.pdf) for reference.
 
 * Another reason why this concept was adopted might be because PixelRNN have been outperforming PixelCNN due to them having recurrent connections between one layer to all other layers in the network, whereas PixelCNN does not have this feature. This is solved by adding more layers to add depth, and since CNNs don't struggle with vanishing gradients we don't have to worry about that, whereas RNNs do. We also add a gate to mimic the gates of the inner workings of LSTMs and have more control over the flow of information through our model.
+
+Additionally, one last point I would like to add, is that generally sigmoid and tanh are better for approximating classifier functions. Hence this might lead to faster training and convergence. Therefore, this could also be a reason, why they chose to replace the ReLU with thei custom function.
+
+## 1 x 1 Convolution:
+
+* This seems like a really trivial thing, when it is applied in a 2 Dimensional context, then we would simply be multiplying each number in a matrix by another number.
+
+* But in higher dimensions this allows to do a rather non-trivial computation on the input volume. Assume we have a tensor of dimensions 6 x 6 x 32 (each channels has 32 attributes). Now, if we'd multiply this tensor by a 1 x 1 x 32 filter, we would end up with a output that has 6 x 6 x 1 dimensionality. Pretty cool, huh? With a simple 1 x 1 filter we were able to shrink the number of channels. This idea was first proposed in [this paper](https://arxiv.org/pdf/1312.4400.pdf).
+
+This effectively allows us to shrink the number of channels to the number of filters that were applied.
+
+![1 x 1 convolution](https://i.imgur.com/OSNKo6j.png)
+
+## Residual Blocks
 
 ## Terms we need to understand:
 I found that reading research papers I would come across a lot of words and terms that I couldn't understand, and they were not explained as it is assumed that you have some knowledge in the field that is being discussed. But if you've just started then a lot of the terms will be a difficult to digest. There will be sections throughout this article that will breka down the important ideas.
