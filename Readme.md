@@ -3,7 +3,7 @@ A compendium of everything you need to know to get started with Wavenet. From tu
 
 # Introduction:
 * Wavenet was first introduced in this [paper](https://arxiv.org/abs/1609.03499) and is an essential read for the rest of this article. 
-* Why is it so good?
+* What makes the wavenet so powerful? As we will go through the different parts that will ultimately conglomerate this network, we will notice that a lot of ideas have been borrowed from other types of networks, and all of them are powerful mechanisms in their own right, such as convolutional layers, dilated filters, gated activation units, 1by1 convolutions for channel shrinking, skip connections and residual connections. But they also work towards fixing some of the problems that previous deep networks struggled with in the past.
 
 # Tools:
 * python
