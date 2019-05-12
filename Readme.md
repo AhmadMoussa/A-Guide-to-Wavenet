@@ -204,6 +204,43 @@ This effectively allows us to shrink the number of channels to the number of fil
 
 ## Residual Blocks
 
+# Implementing the network:
+
+* Let's first create all the parts that will make up the final network:
+
+```python
+def _create_variables(self):
+        var = dict()
+        with tf.variable_scope('wavenet'):
+            with tf.variable_scope('causal_layer'):
+                layer = dict()
+                initial_channels = self.quantization_channels
+                initial_filter_width = self.filter_width
+                layer['filter'] = create_variable('filter',[initial_filter_width, initial_channels, self.residual_channels])
+                var['causal_layer'] = layer
+
+            var['dilated_stack'] = list()
+            with tf.variable_scope('dilated_stack'):
+                for i, dilation in enumerate(self.dilations):
+                    with tf.variable_scope('layer{}'.format(i)):
+                        current = dict()
+                        current['filter'] = create_variable('filter', [self.filter_width, self.residual_channels, self.dilation_channels])
+                        current['gate'] = create_variable('gate', [self.filter_width, self.residual_channels, self.dilation_channels])
+                        current['dense'] = create_variable('dense', [1, self.dilation_channels, self.residual_channels])
+                        current['skip'] = create_variable('skip', [1, self.dilation_channels, self.skip_channels])
+                        var['dilated_stack'].append(current)
+
+            with tf.variable_scope('postprocessing'):
+                current = dict()
+                current['postprocess1'] = create_variable('postprocess1', [1, self.skip_channels, self.skip_channels])
+                current['postprocess2'] = create_variable('postprocess2', [1, self.skip_channels, self.quantization_channels])
+                var['postprocessing'] = current
+
+        return var
+```
+
+* Essentially, waht we're doing here is creating a massive python dictionary that will point towards our layers with their respective name. This dictionary is comprised of: another dictionary that contains the causal layer at the front of the network, a list of dicts that represents the dilated stack, wherein each dict is representing a residual block with a filter, gate, dense and skip layer. And finally 2 postprocessing layers at the end.
+
 ## Terms we need to understand:
 I found that reading research papers I would come across a lot of words and terms that I couldn't understand, and they were not explained as it is assumed that you have some knowledge in the field that is being discussed. But if you've just started then a lot of the terms will be a difficult to digest. There will be sections throughout this article that will breka down the important ideas.
 * Tractable: you will come across this term in the context of solving problems, computing/calculating things and creating models. In the context of solving a problem, when we state that a problem is "tractable", it means that it can be solved or that the value can be found in a reasonable amount of time. Some problems are said to be "Intractable". From a computational complexity stance, intractable problems are problems for which there exist no efficient algorithms to solve them. Most intractable problems have an algorithm – the same algorithm – that provides a solution, and that algorithm is the brute-force search.
