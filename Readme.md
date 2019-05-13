@@ -206,6 +206,11 @@ This effectively allows us to shrink the number of channels to the number of fil
 
 # Implementing the network:
 
+## Before we start:
+* Make sure you install librosa and tensorflow. Librosa might throw some errors, hence try debugging it first and getting it to work. we will need it to load audio samples into our model.
+
+## Structure and Helper Functions:
+
 * Let's first create all the parts that will make up the final network, wou'll need to understand [variable scopes](https://stackoverflow.com/questions/35919020/whats-the-difference-of-name-scope-and-a-variable-scope-in-tensorflow) and the [python `with` statement](https://preshing.com/20110920/the-python-with-statement-by-example/). Go ahead and look them up and come back:
 
 ```python
@@ -282,7 +287,7 @@ def causal_conv(value, filter_, dilation, name = 'causal_conv'):
 			return result
 
 ```
-* The convolutions we are going to use are all causal. Hence we're creating a function that takes our input `value`, the `filter` which we are going to convolve with over the input, and the dilation parameter to specify how dilated the filter is. If the dilation argument is less or equal to 1 we just convolve normally. If it's larger than 1 we need
+* The convolutions we are going to use are all causal. Hence we're creating a function that takes our input `value`, the `filter` which we are going to convolve with over the input, and the dilation parameter to specify how dilated the filter is. If the dilation argument is less or equal to 1 we just convolve normally. If it's larger than 1 we need to some processing on the input. The input is in the form of a one_hot encoding
 
 ```python
 def _create_causal_layer(self, input_batch):
@@ -314,3 +319,8 @@ Stochastic: something that was randomly determined
 * [Dilated Convolution](https://www.quora.com/What-is-the-difference-between-dilated-convolution-and-convolution+stride): In this type of convolution, the filter expands. This is sometimes also called "Atrous" convolution, where "Atrous" comes from the french word "à trous" meaning "with holes".
 * [Causal Concolution](https://arxiv.org/abs/1803.01271): this term is rather vague, but a "causal" convolution means that there is no information leakage from future to past.
 * Fractional Upsampling: when the stride of the filter is less than 1 (S < 1). Then we end up a with a feature map size larger than the input layer size.
+
+## Problems with librosa:
+* I ran into an error using librosa, which wouldn't allow it to load audio files or read them. This github issue accurately describes this probem and offers solutions for different environments [`raise NoBackendError()`](https://github.com/librosa/librosa/issues/219). On windows however, [this](https://github.com/adaptlearning/adapt_authoring/wiki/Installing-FFmpeg) fixed it for me. Also, you'll need this for windows:
+	1. to open admin command prompt press Windows+X and select the admin prompt.
+	2. If it shows powershell instead of command prompt got to settings->personalize->change to command prompt
