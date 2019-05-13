@@ -244,6 +244,9 @@ def _create_variables(self):
 	1. A python dictionary that contains the causal layer at the front of the network.
 	2. A python list of dictionaries that represents the dilated stack, wherein each dict is representing a residual block with a filter, gate, dense and skip layer. 
 	3. And finally a dictionary 2 postprocessing layers at the end.
+	
+Here's a diagram to help your imagination:
+![data structure](https://i.imgur.com/5jI61Jp.png)
 
 ## Terms we need to understand:
 I found that reading research papers I would come across a lot of words and terms that I couldn't understand, and they were not explained as it is assumed that you have some knowledge in the field that is being discussed. But if you've just started then a lot of the terms will be a difficult to digest. There will be sections throughout this article that will breka down the important ideas.
