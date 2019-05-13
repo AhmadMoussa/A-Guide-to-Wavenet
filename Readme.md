@@ -206,7 +206,7 @@ This effectively allows us to shrink the number of channels to the number of fil
 
 # Implementing the network:
 
-* Let's first create all the parts that will make up the final network:
+* Let's first create all the parts that will make up the final network, wou'll need to understand [variable scopes](https://stackoverflow.com/questions/35919020/whats-the-difference-of-name-scope-and-a-variable-scope-in-tensorflow) and the [python `with` statement](https://preshing.com/20110920/the-python-with-statement-by-example/). Go ahead and look them up and come back:
 
 ```python
 def _create_variables(self):
