@@ -248,6 +248,55 @@ def _create_variables(self):
 Here's a diagram to help your imagination:
 ![data structure](https://i.imgur.com/gxZdPx8.png)
 
+* Now let's define some useful operations:
+
+```python
+def time_to_batch(value, dilation, name = None):
+	with tf.name_scope('time_to_batch'):
+		shape = tf.shape(value)
+		pad_elements = dilation - 1 - (shape[1] + dilation - 1) % dilation
+		padded = tf.pad(value, [[0, 0], [0, pad_elements], [0, 0]])
+		reshaped = tf.reshape(padded, [-1, dilation, shape[2]])
+		transposed = tf.transpose(reshaped, perm = [1, 0, 2])
+		return tf.reshape(transposed, [shape[0] * dilation, -1, shape[2]])
+		
+def batch_to_time(value, dilation, name = None):
+	with tf.name_scope('batch_to_time'):
+		shape = tf.shape(value)
+		prepared = tf.reshape(value, [dilation, -1, shape[2]])
+		transposed = tf.transpose(prepared, perm = [1, 0, 2])
+		return tf.reshape(transposed, [tf.div(shape[0], dilation), -1, shape[2]])
+		
+def causal_conv(value, filter_, dilation, name = 'causal_conv'):
+	with tf.name_scope(name):
+		filter_width = tf.shape(filter_)[0]
+		if dilation > 1:
+			transformed = time_to_batch(value, dilation)
+			conv = tf.nn.conv1d(transformed, filter_, stride = 1, padding = 'VALID')
+			restored = batch_to_time(conv, dilation)
+		else:
+			restored = tf.nn.conv1d(value, filter_, stride = 1, padding = 'VALID')
+			
+			out_width = tf.shape(value)[1] - (filter_width - 1) * dilation
+			result = tf.slice(restored, [0,0,0], [-1, out_width, -1])
+			return result
+
+```
+* The convolutions we are going to use are all causal. Hence we're creating a function that takes our input `value`, the `filter` which we are going to convolve with over the input, and the dilation parameter to specify how dilated the filter is. If the dilation argument is less or equal to 1 we just convolve normally. If it's larger than 1 we need
+
+```python
+def _create_causal_layer(self, input_batch):
+	with tf.name_Scope('causal_layer'):
+		weights_filter = self.variables['causal_layer']['filter']
+		return causal_conv(input_batch, weights_filter, 1)
+
+def _create_network(self. input_batch):
+	outputs = []
+	current_layer = input_batch
+	
+	current_layer = self._create_causal_layer(current_layer)
+```
+
 ## Terms we need to understand:
 I found that reading research papers I would come across a lot of words and terms that I couldn't understand, and they were not explained as it is assumed that you have some knowledge in the field that is being discussed. But if you've just started then a lot of the terms will be a difficult to digest. There will be sections throughout this article that will breka down the important ideas.
 * Tractable: you will come across this term in the context of solving problems, computing/calculating things and creating models. In the context of solving a problem, when we state that a problem is "tractable", it means that it can be solved or that the value can be found in a reasonable amount of time. Some problems are said to be "Intractable". From a computational complexity stance, intractable problems are problems for which there exist no efficient algorithms to solve them. Most intractable problems have an algorithm – the same algorithm – that provides a solution, and that algorithm is the brute-force search.
