@@ -226,7 +226,29 @@ plt.show()
 
 * Let's create a minimal audio loader, and test it by plotting a small part of the waveform. You should get something that looks like this:
 
-![audio graph](https://i.imgur.com/y54PBKD.png)
+![audio graph](https://i.imgur.com/8IUIsKH.png)
+
+* Next step is quantizing this audio by passing it through the mu-law encode:
+
+```python
+def mu_law_encode(audio, quantization_channels):
+    mu = tf.to_float(quantization_channels - 1)
+    safe_audio_abs = tf.minimum(tf.abs(audio), 1.0)
+    magnitude = tf.log1p(mu * safe_audio_abs) / tf.log1p(mu)
+    signal = tf.sign(audio) * magnitude
+    return tf.to_int32((signal + 1) / 2 * mu + 0.5)
+
+quantized_audio = mu_law_encode(audio, 256)
+
+sess = tf.InteractiveSession()
+print(quantized_audio.shape)
+
+for i in range(quantized_audio.shape[0]):
+    print(quantized_audio[i].eval(session = sess))
+```
+![Quantized audio graph](https://i.imgur.com/PYb7avL.png)
+
+* Looking good so far.
 
 ## Structure and Helper Functions:
 
