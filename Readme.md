@@ -248,7 +248,7 @@ for i in range(quantized_audio.shape[0]):
 ```
 ![Quantized audio graph](https://i.imgur.com/PYb7avL.png)
 
-* Looking good so far.
+* Looking good so far. Notice the scale of the two graphs on their y-axes, even though it seems like the quantized graph has a much larger scale, it actually only spans 256 discrete values, whereas the prior graph has an almost continuous decimal range. The first graph has a better resolution visually, but the quantized version is good enough to work with.
 
 ## Structure and Helper Functions:
 
