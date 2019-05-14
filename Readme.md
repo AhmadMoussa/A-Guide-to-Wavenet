@@ -250,6 +250,33 @@ for i in range(quantized_audio.shape[0]):
 
 * Looking good so far. Notice the scale of the two graphs on their y-axes, even though it seems like the quantized graph has a much larger scale, it actually only spans 256 discrete values, whereas the prior graph has an almost continuous decimal range. The first graph has a better resolution visually, but the quantized version is good enough to work with. Also, notice the second huge dip, it is almost vertical in the quantized version as aopposed to the original. This reinforces that our encode pays more detail to the little variations more than it does for the huge frequency swings.
 
+* Now last thing before we can move one is converting this quantized audio data into one hot encodings.
+
+```python
+def _one_hot(input_batch):
+    encoded = tf.one_hot(input_batch, depth = 256, dtype = tf.float32)
+    shape = [1, -1, 256]
+    encoded = tf.reshape(encoded, shape)
+    return encoded
+
+one_hot = _one_hot(quantized_audio)
+one_hot_data = one_hot[0,0,:].eval(session=sess)
+print(one_hot_data)
+```
+* And you should see something like this:
+
+`[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]`
+
 ## Structure and Helper Functions:
 
 * Let's first create all the parts that will make up the final network, wou'll need to understand [variable scopes](https://stackoverflow.com/questions/35919020/whats-the-difference-of-name-scope-and-a-variable-scope-in-tensorflow) and the [python `with` statement](https://preshing.com/20110920/the-python-with-statement-by-example/). Go ahead and look them up and come back:
