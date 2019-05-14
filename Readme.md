@@ -209,6 +209,25 @@ This effectively allows us to shrink the number of channels to the number of fil
 ## Before we start:
 * Make sure you install librosa and tensorflow. Librosa might throw some errors, hence try debugging it first and getting it to work. we will need it to load audio samples into our model.
 
+```python
+import librosa
+import numpy as np
+import matplotlib.pyplot as plt
+
+def load_audio():
+    filename = librosa.util.example_audio_file()
+    audio, _ = librosa.load(filename, 11025, mono=True, duration = 0.1)
+    audio = audio.reshape(-1, 1)
+    return audio
+
+plt.plot(load_audio())
+plt.show()
+```
+
+* Let's create a minimal audio loader, and test it by plotting a small part of the waveform. You should get something that looks like this:
+
+![audio graph](https://i.imgur.com/y54PBKD.png)
+
 ## Structure and Helper Functions:
 
 * Let's first create all the parts that will make up the final network, wou'll need to understand [variable scopes](https://stackoverflow.com/questions/35919020/whats-the-difference-of-name-scope-and-a-variable-scope-in-tensorflow) and the [python `with` statement](https://preshing.com/20110920/the-python-with-statement-by-example/). Go ahead and look them up and come back:
