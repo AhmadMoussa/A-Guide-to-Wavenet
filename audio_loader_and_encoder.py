@@ -1,23 +1,32 @@
 import librosa
-import numpy as np
-import matplotlib.pyplot as plt
 import tensorflow as tf
 
-def load_audio():
-    filename = librosa.util.example_audio_file()
-    audio, _ = librosa.load(filename, 11025, mono=True, duration = 0.1)
-    audio = audio.reshape(-1, 1)
-    return audio
+class lqe():
+    def load_example(self):
+        filename = librosa.util.example_audio_file()
+        audio, _ = librosa.load(filename, 11025, mono=True, duration = 0.1)
+        audio = audio.reshape(-1, 1)
+        return audio
 
-def mu_law_encode(audio, quantization_channels):
-    mu = tf.to_float(quantization_channels - 1)
-    safe_audio_abs = tf.minimum(tf.abs(audio), 1.0)
-    magnitude = tf.log1p(mu * safe_audio_abs) / tf.log1p(mu)
-    signal = tf.sign(audio) * magnitude
-    return tf.to_int32((signal + 1) / 2 * mu + 0.5)
+    def load_audio(self, path, sample_rate, duration, mono):
+        audio, _ = librosa.load(path, sample_rate, mono, duration)
+        return audio.reshape(-1,1)
 
-def _one_hot(input_batch):
-    encoded = tf.one_hot(input_batch, depth = 256, dtype = tf.float32)
-    shape = [1, -1, 256]
-    encoded = tf.reshape(encoded, shape)
-    return encoded
+    def mu_law_encode(self, audio, quantization_channels):
+        mu = tf.cast(quantization_channels - 1, dtype = tf.float32)
+        safe_audio_abs = tf.minimum(tf.abs(audio), 1.0)
+        magnitude = tf.log1p(mu * safe_audio_abs) / tf.log1p(mu)
+        signal = tf.sign(audio) * magnitude
+        return tf.cast((signal + 1) / 2 * mu + 0.5, tf.int32)
+
+    def mu_law_decode(self, output, quantization_channels):
+        mu = quantization_channels - 1
+        signal = 2 * (tf.to_float(output) / mu) - 1
+        magnitude = (1 / mu) * ((1 + mu)**abs(signal) - 1)
+        return tf.sign(signal) * magnitude
+
+    def audio_to_one_hot(self, input_batch, batch_size, quantization_channels):
+        return tf.reshape(tf.one_hot(input_batch, quantization_channels, dtype = tf.float32), [batch_size, -1, quantization_channels])
+
+    def path_to_one_hot(self, path, quantization_channels):
+        return self.audio_to_one_hot(self.mu_law_encode(self.load_audio(path, 11025, 0.1, True), quantization_channels), 1, quantization_channels)
