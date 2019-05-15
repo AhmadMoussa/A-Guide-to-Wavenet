@@ -281,6 +281,37 @@ print(one_hot_data)
 
 * The only value that is not zero, is the 128th, which is in concordance with what we see in the graphs and when we print out the content of the arrays. 
 
+## Enter Wavenet:
+
+* Our input data has to go through a causal convolution first, the purpose of it is to shrink the number of layers. What this is in fact, is a feature pooling technique as discussed previously in 1x1 convoltuion section.
+
+```python
+import tensorflow as tf
+
+def create_variable(name, shape):
+    initializer = tf.contrib.layers.xavier_initializer_conv2d()
+    variable = tf.Variable(initializer(shape=shape), name=name)
+    return variable
+
+def _create_causal_layer(input_batch):
+        initial_filter_width = 32
+        initial_channels = 2**8
+        residual_channels = 16
+        weights_filter = create_variable('filter', [initial_filter_width, initial_channels, residual_channels])
+        return causal_conv(input_batch, weights_filter, 1)
+
+# what this essentially does is reduce the number of channels and
+def causal_conv(value, filter_, dilation, name='causal_conv'):
+    filter_width = tf.shape(filter_)[0]
+    restored = tf.nn.conv1d(value, filter_, stride=1, padding='VALID')
+    tf.global_variables_initializer().run()
+    # Remove excess elements at the end.
+    out_width = tf.shape(value)[1] - (filter_width - 1) * dilation
+    result = tf.slice(restored, [0, 0, 0], [-1, out_width, -1])
+    return result
+```
+We are also cutting a couple of elements at the end depending on the size of the batch that was fed to it.
+
 ## Structure and Helper Functions:
 
 * Let's first create all the parts that will make up the final network, wou'll need to understand [variable scopes](https://stackoverflow.com/questions/35919020/whats-the-difference-of-name-scope-and-a-variable-scope-in-tensorflow) and the [python `with` statement](https://preshing.com/20110920/the-python-with-statement-by-example/). Go ahead and look them up and come back:
@@ -367,11 +398,6 @@ def _create_causal_layer(self, input_batch):
 		weights_filter = self.variables['causal_layer']['filter']
 		return causal_conv(input_batch, weights_filter, 1)
 
-def _create_network(self. input_batch):
-	outputs = []
-	current_layer = input_batch
-	
-	current_layer = self._create_causal_layer(current_layer)
 ```
 
 ## Terms we need to understand:
