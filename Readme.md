@@ -155,6 +155,8 @@ ___
 
 * At the time of training our model, we need to hide information that occurs after timestep t. Timestep t should not depend on any future timesteps, otherwise we would be cheating quite a bit, there should be no "leakage from future to past".
 
+* Causality in our case simply means that we are hiding all future time steps(data samples), from the filter that is currently at work. We don't want it to see yet what coming up in the future, but we would like it to learn the relationship between the current time-step and previous ones. If there would be "leakage" of future content into the current time-step, 
+
 ## Gated Activation Units:
 * The term "Gate" has been adopted in a number of fields, for example in music production, we use the term "Noise-Gate" when we refer to a device that is responsible for attenuating signals that fall below some pre determined threshhold, and simpler said, if a certain sound is not loud enough, then the listener will not be able to hear it at all. 
 
