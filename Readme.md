@@ -153,6 +153,7 @@ ___
 ### Causality:
 * Talk about difference between causal convolution and RNN and how causal convolution is easier to compute. Add how dilating the filter fixes the problem that the causal convolution has.
 
+#### [What's a Causal Convolution?](https://www.quora.com/What-are-causal-convolutions)
 * Causality in our case simply means that we are hiding all future time steps(data samples), from the filter that is currently at work. We don't want it to see yet what's coming up in the future, but we would like it to learn the relationship between the current time-step and previous ones. If there would be "leakage" of future content into the current time-step, then we wouldn't be teaching our network the correct content. The origin of this causal layer can be drawn back, yet again, to the pixelCNN where instead of causality they use masks, but it is basically the same. 
 
 * In the PixelCNN, in simple terms, we are trying to learn what the next pixel should look like (it's RGB values), given all the pixels that have occurred previously. Think about it intuitively for a second, we've been given a half complete image that is mostly blue-ish of color, it would make sense to complete the sequence with another blue pixel, maybe a little bit brighter or less bright.
@@ -160,6 +161,9 @@ ___
 * And this is the reason why the authors have labelled PixelCNN as a model that performs "Autoregressive Density Estimation", where density stands for a [probability density function](https://en.wikipedia.org/wiki/Probability_density_function). In both Wavenet and PixelCNN we are trying to model the joint probability of a timestep as a product of conditional probabilities of all previous timesteps. In layman's terms, what's the chance we're simething is going to happen, given everything that has happened already.
 
 ![Probability Density](https://i.imgur.com/28Xnr0P.png)
+
+#### [Why use Causal Convolutions rather than RNNs or LSTMs](https://arxiv.org/pdf/1803.01271.pdf)
+* Recurrent Neural Networks are notorious for being hard to train, 
 
 ## Gated Activation Units:
 * The term "Gate" has been adopted in a number of fields, for example in music production, we use the term "Noise-Gate" when we refer to a device that is responsible for attenuating signals that fall below some pre determined threshhold, and simpler said, if a certain sound is not loud enough, then the listener will not be able to hear it at all. 
