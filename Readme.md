@@ -163,7 +163,12 @@ ___
 ![Probability Density](https://i.imgur.com/28Xnr0P.png)
 
 #### [Why use Causal Convolutions rather than RNNs or LSTMs](https://arxiv.org/pdf/1803.01271.pdf)
-* Recurrent Neural Networks are notorious for being hard to train, 
+* Recurrent Neural Networks are notorious for being hard to train(vanishing/exploding gradient and recurrent connections), but they have an advantage, which is a long memory retention. 
+
+* Now our causal filter has to be linearly very large to achieve an effective history size, which is cumbersome to compute and introduces an overhead. But this problem can simply be solved by stacking dilated layers on top of this causal one, which allows us to exponentially increase our filter size and achieve a larger history size. 
+
+* In addition, the backpropagation method is different from that used in RNNs, and therefore avoiding the vanishing/exploding gradient problem altogether.
+
 
 ## Gated Activation Units:
 * The term "Gate" has been adopted in a number of fields, for example in music production, we use the term "Noise-Gate" when we refer to a device that is responsible for attenuating signals that fall below some pre determined threshhold, and simpler said, if a certain sound is not loud enough, then the listener will not be able to hear it at all. 
