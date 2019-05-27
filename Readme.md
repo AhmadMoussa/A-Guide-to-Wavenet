@@ -217,9 +217,19 @@ This effectively allows us to shrink the number of channels to the number of fil
 
 ![1 x 1 convolution](https://i.imgur.com/OSNKo6j.png)
 
-## Residual Blocks
+## Residual Blocks:
+* The term "Residual Block" refers the structure that computes the residual, which will be passed on to subsequent residual blocks. What is a residual
 
 # Implementing the network:
+
+## Dependencies:
+
+* We'll need a couple of things before we get started:
+`pip install tensorflow`
+`pip install tensorboard`
+`pip install librosa`
+`pip install numpy`
+`pip install matplotlib`
 
 ## Before we start:
 * Make sure you install librosa and tensorflow. Librosa might throw some errors, hence try debugging it first and getting it to work. we will need it to load audio samples into our model.
@@ -331,38 +341,49 @@ We are also cutting a couple of elements at the end depending on the size of the
 
 * Let's first create all the parts that will make up the final network, wou'll need to understand [variable scopes](https://stackoverflow.com/questions/35919020/whats-the-difference-of-name-scope-and-a-variable-scope-in-tensorflow) and the [python `with` statement](https://preshing.com/20110920/the-python-with-statement-by-example/). Go ahead and look them up and come back:
 
-```python
-def _create_variables(self):
-        var = dict()
-        with tf.variable_scope('wavenet'):
-            with tf.variable_scope('causal_layer'):
-                layer = dict()
-                initial_channels = self.quantization_channels
-                initial_filter_width = self.filter_width
-                layer['filter'] = create_variable('filter',[initial_filter_width, initial_channels, self.residual_channels])
-                var['causal_layer'] = layer
+* We need afunction that creates variables according to our specified shape, and we'll have a number of different ones. So let's slap a wrapper around the tensorflow `Variable()` function:
+```
+import tensorflow as tf
 
-            var['dilated_stack'] = list()
-            with tf.variable_scope('dilated_stack'):
-                for i, dilation in enumerate(self.dilations):
-                    with tf.variable_scope('layer{}'.format(i)):
-                        current = dict()
-                        current['filter'] = create_variable('filter', [self.filter_width, self.residual_channels, self.dilation_channels])
-                        current['gate'] = create_variable('gate', [self.filter_width, self.residual_channels, self.dilation_channels])
-                        current['dense'] = create_variable('dense', [1, self.dilation_channels, self.residual_channels])
-                        current['skip'] = create_variable('skip', [1, self.dilation_channels, self.skip_channels])
-                        var['dilated_stack'].append(current)
-
-            with tf.variable_scope('postprocessing'):
-                current = dict()
-                current['postprocess1'] = create_variable('postprocess1', [1, self.skip_channels, self.skip_channels])
-                current['postprocess2'] = create_variable('postprocess2', [1, self.skip_channels, self.quantization_channels])
-                var['postprocessing'] = current
-
-        return var
+def create_variable(name, shape):
+    initializer = tf.contrib.layers.xavier_initializer_conv2d()
+    variable = tf.Variable(initializer(shape=shape), name=name)
+    return variable
 ```
 
-* Essentially, what we're doing here, is creating a massive python dictionary that will point towards "containers", that essential describe and contain our layers. This dictionary is comprised of: 
+* Next let's create the structure of the network, which is basically a large dictionary of learnable filters that we're gonna use to convolve over the input sequence, and update them during backprop. Code:
+
+```python
+import tensorflow as tf
+from create_variable import create_variable
+
+def construct_network(filter_width, quantization_channels,residual_channels,dilation_channels,skip_channels,dilations):
+    net = dict()
+
+    with tf.variable_scope('wavenet'):
+        with tf.variable_scope('causal_layer'):
+            layer = dict()
+            layer['filter'] = create_variable('filter', [filter_width, quantization_channels,residual_channels])
+            net['causal_layer'] = layer
+        net['dilated_stack'] = list()
+        with tf.variable_scope('dilated_stack'):
+            for i, dilation in enumerate(dilations):
+                with tf.variable_scope('layer{}'.format(i)):
+                    current = dict()
+                    current['filter'] = create_variable('filter', [filter_width, residual_channels, dilation_channels])
+                    current['gate'] = create_variable('gate', [filter_width, residual_channels, dilation_channels])
+                    current['dense'] = create_variable('dense',[1, dilation_channels,  residual_channels])
+                    current['skip'] = create_variable('skip', [1, dilation_channels, skip_channels])
+                    net['dilated_stack'].append(current)
+        with tf.variable_scope('postprocessing'):
+            current = dict()
+            current['postprocess1'] = create_variable('postprocess1',[1, skip_channels, skip_channels])
+            current['postprocess2'] = create_variable('postprocess2',[1, skip_channels, quantization_channels])
+        net['postprocessing'] = current
+    return net
+```
+
+* Essentially, what we're doing here, is creating a massive python dictionary that will point towards "containers", that describe and carry our layers. This dictionary is comprised of: 
 
 	1. A python dictionary that contains the causal layer at the front of the network.
 	2. A python list of dictionaries that represents the dilated stack, wherein each dict is representing a residual block with a filter, gate, dense and skip layer. 
@@ -372,6 +393,9 @@ Here's a diagram to help your imagination:
 ![data structure](https://i.imgur.com/gxZdPx8.png)
 
 * Now let's define some useful operations:
+	1. `causal_conv` we're going to use this one a bunch. It has two modes, a simple 1D convolution that serves as a channel shrinking operation when the dilation factor is equal to 1. And another mode when the dilation factor is higher than 1. For which we'll need the other two functions, `time_to_batch` and `batch_to_time`.
+	2. `time_to_batch`
+	3. `batch_to_time`
 
 ```python
 def time_to_batch(value, dilation, name = None):
@@ -406,14 +430,6 @@ def causal_conv(value, filter_, dilation, name = 'causal_conv'):
 
 ```
 * The convolutions we are going to use are all causal. Hence we're creating a function that takes our input `value`, the `filter` which we are going to convolve with over the input, and the dilation parameter to specify how dilated the filter is. If the dilation argument is less or equal to 1 we just convolve normally. If it's larger than 1 we need to some processing on the input. The input is in the form of a one_hot encoding
-
-```python
-def _create_causal_layer(self, input_batch):
-	with tf.name_Scope('causal_layer'):
-		weights_filter = self.variables['causal_layer']['filter']
-		return causal_conv(input_batch, weights_filter, 1)
-
-```
 
 ## Terms we need to understand:
 I found that while reading research papers, I would come across a lot of words and terms that I couldn't understand, and they were not explained as it is assumed that you have some knowledge in the field that is being discussed. But if you've just started then a lot of the terms will be a difficult to digest. There will be sections throughout this article that will breka down the important ideas.
