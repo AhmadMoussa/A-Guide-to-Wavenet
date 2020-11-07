@@ -1,20 +1,19 @@
 # Wavenet (Work in Progress)
-A compendium of everything you need to know to get started with Wavenet. From turning Audio into Data, Creating the Wavenet Model, feeding and training your model on your data and ultimately generate your own sounds. (Hopefully :p)
+A compendium of everything you need to know to get started with Wavenet. From creating the basic building blcoks to a complete Wavenet Model as well as feeding and training your model on some data and ultimately generating your own sounds. 
 
-# Introduction:
-* Wavenet was first introduced in this [paper](https://arxiv.org/abs/1609.03499) and is an essential read for the rest of this article. 
-* What makes the wavenet so powerful? As we will go through the different parts that will ultimately conglomerate this network, we will notice that a lot of ideas have been borrowed from other types of networks, and all of them are powerful mechanisms in their own right, such as convolutional layers, dilated filters, gated activation units, 1by1 convolutions for channel shrinking, skip connections and residual connections. But they also work towards fixing some of the problems that previous deep networks struggled with in the past.
+# Prerequisites:
+* Wavenet was first introduced in the paper [WaveNet: A Generative Model for Raw Audio](https://arxiv.org/abs/1609.03499) and is an essential read for the rest of this article. Don't worry if there are parts that are not clear after reading the paper, that's what this guide is for!
+* What makes the wavenet so powerful? As we're going through the different parts that will ultimately conglomerate into this network, we will notice that a lot of ideas have been borrowed from other types of networks, and all of them are powerful mechanisms in their own right, such as convolutional layers, dilated filters, gated activation units, 1by1 convolutions for channel shrinking, skip connections and residual connections. But they also work towards fixing some of the problems that previous deep networks struggled with in the past.
 
 # Tools:
 * python
-* pytorch
-* theano
+* tensorflow & keras (Mainly keras because it helps keeping things simple)
 
 # Relevant Articles:
 * [A paper a day delays the neuron decay](https://towardsdatascience.com/residual-blocks-building-blocks-of-resnet-fd90ca15d6ec)
 * [Korean Guy](https://medium.com/@kion.kim/wavenet-a-network-good-to-know-7caaae735435)
 
-# From Audio to Data:
+# The Shape of Sound:
 ## [What are Sampling Rate and Bit Depth?](https://www.presonus.com/learn/technical-articles/sample-rate-and-bit-depth) 
 * To understand the underlying inner workings of the wavenet, we need to first take a closer look at the data that we are going to use. Because without Data in the first place, there would be no need for this neural network anyway. We need to train our model on audio. Easier said than done. First and foremost we need to find a way to convert from audio, that we humans perceive and "understand" with our ears, to a format that is machine understandable (Spoiler: Numbers!). 
 
